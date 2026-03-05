@@ -180,7 +180,7 @@ h1, h2, h3 {
   display: flex;
   gap: var(--s-lg);
   width: max-content;
-  animation: carousel-scroll 30s linear infinite;
+  animation: carousel-scroll 60s linear infinite;
 }
 
 .skills-carousel__track:hover {
