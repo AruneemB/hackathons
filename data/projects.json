@@ -1,0 +1,84 @@
+{
+  "meta": {
+    "name": "Hackathon Projects",
+    "description": "A timeline of hackathon projects",
+    "lastUpdated": "2026-03-05"
+  },
+  "projects": [
+    {
+      "id": "knkt",
+      "title": "knkt",
+      "date": "2026-03-01",
+      "hackathon": "RaikesHacks 2026",
+      "description": "A Bluetooth-powered mobile networking app built by students, for students. Uses AI-driven compatibility scoring to connect nearby university students with complementary skills. Transforms physical proximity into unanticipated, meaningful collaborations for startups, research, and side projects.",
+      "techStack": ["Flutter", "Dart", "Python", "FastAPI", "MongoDB", "Google OAuth 2.0", "Google Nearby Connections API", "OpenRouter", "Firebase Cloud Messaging"],
+      "teamSize": 3,
+      "award": "1st Place in FindU Track",
+      "links": {
+        "demo": "https://www.linkedin.com/posts/micahtidball_your-next-co-founder-might-be-sitting-10-activity-7434960969740681216-ji1J?utm_source=share&utm_medium=member_desktop&rcm=ACoAAD1_-K4BZTF-x6B8cYyH-iCfIHH-5i--guA",
+        "repo": "https://github.com/AruneemB/raikeshacks"
+      },
+      "thumbnail": "assets/images/knkt-logo.png",
+      "logo": null
+    },
+    {
+      "id": "sanos",
+      "title": "Sanos",
+      "date": "2026-02-07",
+      "hackathon": "TartanHacks 2026",
+      "description": "An automated debugging platform for Next.js applications. Monitors client-side crashes, server exceptions, and Vercel build failures in real time, then traces each error to the causal commit using AI-powered root cause analysis. Automatically opens reviewed pull requests with fixes, integrating with GitHub, Vercel, and CodeRabbit to close the developer debugging loop end-to-end.",
+      "techStack": ["React", "Next.js", "TypeScript", "Tailwind CSS", "FastAPI", "SQLAlchemy", "SQLite", "Dedalus Labs SDK", "CodeRabbit", "Vercel", "GitHub OAuth"],
+      "teamSize": 3,
+      "award": null,
+      "links": {
+        "repo": "https://github.com/mmoiss/tartanhacks"
+      },
+      "thumbnail": null,
+      "logo": null
+    },
+    {
+      "id": "banana-coin",
+      "title": "Banana Coin",
+      "date": "2025-11-09",
+      "hackathon": "CornHacks 2025",
+      "description": "A gamified high-frequency trading simulator built around a fictional cryptocurrency that \"rots\" in value when left idle. Features real-time price updates, an exponential rot mechanic that encourages active trading, and several unlockable AI-powered trading bots with prebuilt and custom natural-language strategies for automated workflows.",
+      "techStack": ["React", "Next.js", "TypeScript", "Tailwind CSS", "FastAPI", "Redis", "Firebase Auth"],
+      "teamSize": 3,
+      "award": null,
+      "links": {
+        "demo": "https://www.youtube.com/watch?v=gVOE-2m1PGs",
+        "repo": "https://github.com/micahtid/cornhacks"
+      },
+      "thumbnail": null,
+      "logo": null
+    },
+    {
+      "id": "rootcode",
+      "title": "RootCode",
+      "date": "2025-10-26",
+      "hackathon": "UNL-Bayer Agtech Hackathon 2025",
+      "description": "Developed a machine learning pipeline that predicts moisture content in maize populations in the Central Corn Belt region by filtering and cleaning 3,000+ features down to high-quality predictors, applying PCA to capture genetic and environmental patterns, and testing multiple ML algorithms for production use.",
+      "techStack": ["Python", "StandardScaler", "RobustScaler", "GridSearchCV", "SelectKBest", "SVR", "Ridge", "Lasso", "ElasticNet", "RandomForestRegressor", "GradientBoostingRegressor"],
+      "teamSize": 4,
+      "award": "1st Place Overall",
+      "links": {},
+      "thumbnail": "assets/images/rootcode-thumbnail.svg",
+      "logo": null
+    },
+    {
+      "id": "beendone",
+      "title": "BeenDone",
+      "date": "2025-10-12",
+      "hackathon": "Hack Midwest 2025",
+      "description": "A startup validation tool for founders that searches a vectorized database of 5,000+ YC-backed companies to deliver AI-powered competitive analysis before you write a single line of code. Features semantic vector search, feature radar charts, funding and stage distribution breakdowns, a geographic heat map of competitors, inline pivot suggestions, and downloadable venture fund proposal PDFs.",
+      "techStack": ["React", "Next.js", "TypeScript", "Tailwind CSS", "FastAPI", "MongoDB Atlas", "Sentence-Transformers", "Google Gemini", "Leaflet.js", "Vercel AI SDK"],
+      "teamSize": 3,
+      "award": "2nd Place in Best in Show",
+      "links": {
+        "repo": "https://github.com/micahtid/hackmidwest"
+      },
+      "thumbnail": "assets/images/beendone-thumbnail.png",
+      "logo": null
+    }    
+  ]
+}

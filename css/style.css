@@ -1,0 +1,600 @@
+/* ==========================================================================
+   0. CUSTOM PROPERTIES
+   ========================================================================== */
+
+:root {
+  --c-bg: #0a0a0a;
+  --c-surface: #131313;
+  --c-border: #1e1e1e;
+  --c-text: #d8d4cf;
+  --c-text-muted: #7a7672;
+  --c-text-faint: #4a4845;
+  --c-award: #c9a96e;
+
+  --f-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --f-family-serif: 'Lora', Georgia, 'Times New Roman', serif;
+  --f-size-xs: 0.75rem;
+  --f-size-sm: 0.8125rem;
+  --f-size-base: 0.9375rem;
+  --f-size-lg: 1.125rem;
+  --f-size-xl: 1.375rem;
+  --f-size-2xl: 2rem;
+  --f-size-3xl: 2.75rem;
+
+  --s-xs: 0.25rem;
+  --s-sm: 0.5rem;
+  --s-md: 1rem;
+  --s-lg: 1.5rem;
+  --s-xl: 2rem;
+  --s-2xl: 3rem;
+  --s-3xl: 4.5rem;
+
+  --timeline-width: 1px;
+  --card-radius: 6px;
+  --dot-size: 9px;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration: 0.25s;
+  --duration-long: 0.5s;
+}
+
+/* ==========================================================================
+   1. RESET & BASE
+   ========================================================================== */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--c-bg);
+  color: var(--c-text);
+  font-family: var(--f-family);
+  font-size: var(--f-size-base);
+  line-height: 1.65;
+  min-height: 100vh;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: var(--c-text);
+  text-decoration: none;
+  transition: color var(--duration) var(--ease-out);
+}
+
+a:hover {
+  color: var(--c-text-muted);
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+/* ==========================================================================
+   2. TYPOGRAPHY
+   ========================================================================== */
+
+h1, h2, h3 {
+  font-family: var(--f-family-serif);
+  line-height: 1.25;
+  font-weight: 500;
+  color: var(--c-text);
+}
+
+/* ==========================================================================
+   3. HERO
+   ========================================================================== */
+
+.hero {
+  text-align: center;
+  padding: 5rem var(--s-lg) 3.5rem;
+  border-bottom: 1px solid var(--c-border);
+}
+
+.hero__title {
+  font-size: var(--f-size-2xl);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  margin-bottom: var(--s-sm);
+  color: var(--c-text);
+}
+
+.hero__subtitle {
+  font-family: var(--f-family-serif);
+  font-style: italic;
+  color: var(--c-text-muted);
+  font-size: var(--f-size-base);
+  font-weight: 400;
+  margin-bottom: var(--s-2xl);
+}
+
+.hero__stats {
+  display: flex;
+  justify-content: center;
+  gap: var(--s-2xl);
+  flex-wrap: wrap;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.stat__number {
+  font-family: var(--f-family-serif);
+  font-size: var(--f-size-xl);
+  font-weight: 400;
+  color: var(--c-text);
+}
+
+.stat__label {
+  font-size: var(--f-size-xs);
+  color: var(--c-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* ==========================================================================
+   3b. SKILLS CAROUSEL
+   ========================================================================== */
+
+.skills-carousel {
+  position: relative;
+  overflow: hidden;
+  margin-top: var(--s-2xl);
+  padding: var(--s-md) 0;
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 12%,
+    black 88%,
+    transparent
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 12%,
+    black 88%,
+    transparent
+  );
+}
+
+.skills-carousel__track {
+  display: flex;
+  gap: var(--s-lg);
+  width: max-content;
+  animation: carousel-scroll 30s linear infinite;
+}
+
+.skills-carousel__track:hover {
+  animation-play-state: paused;
+}
+
+.skills-carousel__item {
+  font-size: var(--f-size-xs);
+  color: var(--c-text-faint);
+  white-space: nowrap;
+  flex-shrink: 0;
+  letter-spacing: 0.03em;
+}
+
+.skills-carousel__item + .skills-carousel__item::before {
+  content: "\00b7";
+  margin-right: var(--s-lg);
+  color: var(--c-text-faint);
+}
+
+@keyframes carousel-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skills-carousel__track {
+    animation: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: auto;
+    gap: var(--s-sm);
+  }
+
+  .skills-carousel {
+    mask-image: none;
+    -webkit-mask-image: none;
+  }
+}
+
+/* ==========================================================================
+   4. TIMELINE LOGO (opposite side)
+   ========================================================================== */
+
+.timeline__logo {
+  display: none;
+}
+
+/* ==========================================================================
+   5. TIMELINE STRUCTURE
+   ========================================================================== */
+
+.timeline {
+  position: relative;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: var(--s-2xl) var(--s-lg);
+}
+
+.timeline__line {
+  position: absolute;
+  left: 16px;
+  top: 0;
+  bottom: 0;
+  width: var(--timeline-width);
+  background: var(--c-border);
+}
+
+.timeline__entry {
+  position: relative;
+  margin-bottom: var(--s-2xl);
+  padding-left: 44px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity var(--duration-long) var(--ease-out),
+              transform var(--duration-long) var(--ease-out);
+  transition-delay: var(--delay, 0ms);
+}
+
+.timeline__entry.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.timeline__dot {
+  position: absolute;
+  left: calc(16px - var(--dot-size) / 2 + var(--timeline-width) / 2);
+  top: 28px;
+  width: var(--dot-size);
+  height: var(--dot-size);
+  border-radius: 50%;
+  background: var(--c-text-faint);
+  z-index: 1;
+}
+
+.timeline__empty {
+  text-align: center;
+  color: var(--c-text-muted);
+  padding: var(--s-3xl) 0;
+  font-size: var(--f-size-base);
+  font-family: var(--f-family-serif);
+  font-style: italic;
+}
+
+/* Year dividers */
+.timeline__year {
+  position: relative;
+  padding-left: 44px;
+  margin-bottom: var(--s-lg);
+  margin-top: var(--s-md);
+}
+
+.timeline__year:first-child {
+  margin-top: 0;
+}
+
+.timeline__year-label {
+  font-family: var(--f-family-serif);
+  font-size: var(--f-size-sm);
+  font-weight: 400;
+  color: var(--c-text-faint);
+  letter-spacing: 0.05em;
+}
+
+/* ==========================================================================
+   6. TIMELINE CARDS
+   ========================================================================== */
+
+.timeline__card {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--card-radius);
+  overflow: hidden;
+  transition: border-color var(--duration) var(--ease-out);
+}
+
+.timeline__card:hover {
+  border-color: var(--c-text-faint);
+}
+
+.timeline__thumb {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-bottom: 1px solid var(--c-border);
+}
+
+.timeline__body {
+  padding: var(--s-lg) var(--s-xl);
+}
+
+.timeline__header {
+  margin-bottom: var(--s-md);
+}
+
+.timeline__dateline {
+  font-size: var(--f-size-xs);
+  color: var(--c-text-faint);
+  letter-spacing: 0.04em;
+  margin-bottom: 6px;
+}
+
+.timeline__dateline time {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.timeline__title {
+  font-size: var(--f-size-xl);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  margin-bottom: 2px;
+}
+
+.timeline__hackathon {
+  font-size: var(--f-size-sm);
+  color: var(--c-text-muted);
+}
+
+.timeline__desc {
+  font-size: var(--f-size-sm);
+  color: var(--c-text-muted);
+  line-height: 1.7;
+  margin-bottom: var(--s-md);
+}
+
+/* ==========================================================================
+   7. COMPONENTS
+   ========================================================================== */
+
+/* Tags -- inline text with dot separators */
+.timeline__tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0;
+  margin-bottom: var(--s-md);
+  font-size: var(--f-size-xs);
+  color: var(--c-text-faint);
+}
+
+.tag {
+  white-space: nowrap;
+}
+
+.tag + .tag::before {
+  content: "\00b7";
+  margin: 0 0.5em;
+  color: var(--c-text-faint);
+}
+
+/* Meta (team size, award) */
+.timeline__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-md);
+  align-items: center;
+  margin-bottom: var(--s-md);
+  font-size: var(--f-size-xs);
+  color: var(--c-text-muted);
+}
+
+.timeline__team,
+.timeline__award {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-xs);
+}
+
+.timeline__award {
+  color: var(--c-award);
+}
+
+/* Links */
+.timeline__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-sm);
+  padding-top: var(--s-sm);
+  border-top: 1px solid var(--c-border);
+}
+
+.timeline__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 10px;
+  font-size: var(--f-size-xs);
+  font-weight: 500;
+  color: var(--c-text-muted);
+  border-radius: 4px;
+  transition: color var(--duration) var(--ease-out);
+}
+
+.timeline__link:hover {
+  color: var(--c-text);
+}
+
+.timeline__link svg {
+  opacity: 0.5;
+}
+
+.timeline__link:hover svg {
+  opacity: 0.8;
+}
+
+/* ==========================================================================
+   8. FOOTER
+   ========================================================================== */
+
+.footer {
+  text-align: center;
+  padding: var(--s-3xl) var(--s-md) var(--s-2xl);
+  color: var(--c-text-faint);
+  font-size: var(--f-size-xs);
+  letter-spacing: 0.03em;
+}
+
+/* ==========================================================================
+   9. ANIMATIONS
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .timeline__entry {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .timeline__card {
+    transition: none;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ==========================================================================
+   10. RESPONSIVE
+   ========================================================================== */
+
+@media (min-width: 768px) {
+  .hero__title {
+    font-size: var(--f-size-3xl);
+  }
+
+  .hero {
+    padding: 6rem var(--s-xl) 4rem;
+  }
+
+  .timeline {
+    padding: var(--s-3xl) var(--s-xl);
+  }
+
+  .timeline__line {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .timeline__entry {
+    display: grid;
+    grid-template-columns: 1fr var(--dot-size) 1fr;
+    gap: 0 var(--s-xl);
+    align-items: start;
+    padding-left: 0;
+    width: 100%;
+  }
+
+  .timeline__dot {
+    position: static;
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: center;
+    margin-top: 28px;
+  }
+
+  .timeline__logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .timeline__logo img {
+    max-width: 120px;
+    max-height: 80px;
+    object-fit: contain;
+    opacity: 0.5;
+    transition: opacity var(--duration) var(--ease-out);
+  }
+
+  .timeline__entry:hover .timeline__logo img {
+    opacity: 0.8;
+  }
+
+  /* Left card: card | dot | logo */
+  .timeline__entry--left .timeline__card {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .timeline__entry--left .timeline__body {
+    text-align: right;
+  }
+
+  .timeline__entry--left .timeline__tags,
+  .timeline__entry--left .timeline__links,
+  .timeline__entry--left .timeline__meta {
+    justify-content: flex-end;
+  }
+
+  .timeline__entry--left .timeline__logo {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  /* Right card: logo | dot | card */
+  .timeline__entry--right .timeline__logo {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .timeline__entry--right .timeline__card {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  /* Year dividers */
+  .timeline__year {
+    text-align: center;
+    padding-left: 0;
+  }
+
+  /* Animation direction */
+  .timeline__entry--left {
+    transform: translateX(-15px);
+  }
+
+  .timeline__entry--right {
+    transform: translateX(15px);
+  }
+
+  .timeline__entry.is-visible {
+    opacity: 1;
+    transform: translateX(0) translateY(0);
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero__title {
+    font-size: 3.25rem;
+  }
+}

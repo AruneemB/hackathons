@@ -1,0 +1,11 @@
+.claude/
+.history/
+.specstory/
+.cursorindexingignore
+NUL
+.env
+.env.*
+.DS_Store
+Thumbs.db
+node_modules/
+*.log
