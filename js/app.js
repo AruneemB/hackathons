@@ -223,5 +223,27 @@
     return str.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
 
-  document.addEventListener('DOMContentLoaded', loadProjects);
+  async function loadGitHubProfile() {
+    try {
+      var res = await fetch('https://api.github.com/users/AruneemB');
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      var user = await res.json();
+      var container = document.getElementById('github-profile');
+      container.innerHTML =
+        '<a class="github-card" href="' + escapeAttr(user.html_url) + '" target="_blank" rel="noopener noreferrer">' +
+          '<img class="github-card__avatar" src="' + escapeAttr(user.avatar_url) + '" alt="' + escapeAttr(user.name || user.login) + '" width="40" height="40">' +
+          '<div class="github-card__info">' +
+            '<span class="github-card__name">' + escapeHTML(user.name || user.login) + '</span>' +
+            '<span class="github-card__username">@' + escapeHTML(user.login) + '</span>' +
+          '</div>' +
+        '</a>';
+    } catch (_) {
+      // hide card silently on error
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    loadProjects();
+    loadGitHubProfile();
+  });
 })();

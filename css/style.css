@@ -101,6 +101,7 @@ h1, h2, h3 {
    ========================================================================== */
 
 .hero {
+  position: relative;
   text-align: center;
   padding: 5rem var(--s-lg) 3.5rem;
   border-bottom: 1px solid var(--c-border);
@@ -121,6 +122,54 @@ h1, h2, h3 {
   font-size: var(--f-size-base);
   font-weight: 400;
   margin-bottom: var(--s-2xl);
+}
+
+/* GitHub profile card */
+#github-profile {
+  position: fixed;
+  top: var(--s-lg);
+  right: var(--s-lg);
+  z-index: 100;
+}
+
+.github-card {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-md);
+  padding: var(--s-sm) var(--s-lg) var(--s-sm) var(--s-sm);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: 999px;
+  transition: border-color var(--duration) var(--ease-out);
+}
+
+.github-card:hover {
+  border-color: var(--c-text-faint);
+  color: var(--c-text);
+}
+
+.github-card__avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.github-card__info {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  line-height: 1.3;
+}
+
+.github-card__name {
+  font-size: var(--f-size-sm);
+  font-weight: 500;
+  color: var(--c-text);
+}
+
+.github-card__username {
+  font-size: var(--f-size-xs);
+  color: var(--c-text-muted);
 }
 
 .hero__stats {
@@ -180,7 +229,7 @@ h1, h2, h3 {
   display: flex;
   gap: var(--s-lg);
   width: max-content;
-  animation: carousel-scroll 60s linear infinite;
+  animation: carousel-scroll 120s linear infinite;
 }
 
 .skills-carousel__track:hover {
