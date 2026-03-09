@@ -72,7 +72,7 @@
       "hackathon": "Hack Midwest 2025",
       "description": "A startup validation tool for founders that searches a vectorized database of 5,000+ YC-backed companies to deliver AI-powered competitive analysis before you write a single line of code. Features semantic vector search, feature radar charts, funding and stage distribution breakdowns, a geographic heat map of competitors, inline pivot suggestions, and downloadable venture fund proposal PDFs.",
       "techStack": ["React", "Next.js", "TypeScript", "Tailwind CSS", "FastAPI", "MongoDB Atlas", "Sentence-Transformers", "Google Gemini", "Leaflet.js", "Vercel AI SDK"],
-      "teamSize": 3,
+      "teamSize": 5,
       "award": "2nd Place in Best in Show",
       "links": {
         "repo": "https://github.com/micahtid/hackmidwest"
