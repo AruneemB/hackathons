@@ -289,7 +289,7 @@
       
       try {
         var project = allProjects.find(function(p) { return p.id === currentProjectId; });
-        var response = await fetch('http://localhost:3000/api/ask', {
+        var response = await fetch('/api/ask', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
