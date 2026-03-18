@@ -124,6 +124,12 @@
           .join('');
       }
 
+      // Add "Ask" button
+      linksHTML += '<button class="timeline__link timeline__link--ask" data-id="' + project.id + '">' +
+        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2v10z"/></svg> ' +
+        'Ask Question' +
+        '</button>';
+
       var awardHTML = '';
       if (project.award) {
         awardHTML = '<span class="timeline__award">' +
@@ -245,5 +251,96 @@
   document.addEventListener('DOMContentLoaded', function () {
     loadProjects();
     loadGitHubProfile();
+    initChat();
   });
+
+  // --- Chat Logic ---
+  var currentProjectId = null;
+
+  function initChat() {
+    var widget = document.getElementById('chat-widget');
+    var closeBtn = document.getElementById('chat-close');
+    var form = document.getElementById('chat-form');
+    var input = document.getElementById('chat-input');
+    var container = document.getElementById('timeline');
+
+    // Delegate click events for "Ask" buttons
+    container.addEventListener('click', function (e) {
+      var btn = e.target.closest('.timeline__link--ask');
+      if (btn) {
+        openChat(btn.getAttribute('data-id'));
+      }
+    });
+
+    closeBtn.addEventListener('click', function () {
+      widget.classList.add('hidden');
+    });
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      var msg = input.value.trim();
+      if (!msg) return;
+
+      addMessage(msg, 'user');
+      input.value = '';
+      
+      // Show typing indicator
+      var typingId = addMessage('...', 'bot', true);
+      
+      try {
+        var project = allProjects.find(function(p) { return p.id === currentProjectId; });
+        var response = await fetch('http://localhost:3000/api/ask', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            question: msg,
+            project: project
+          })
+        });
+
+        var data = await response.json();
+        removeMessage(typingId);
+        addMessage(data.answer || 'Sorry, I encountered an error.', 'bot');
+      } catch (err) {
+        removeMessage(typingId);
+        addMessage('Could not connect to the chat server. Make sure dev-server.js is running!', 'bot');
+      }
+    });
+  }
+
+  function openChat(projectId) {
+    currentProjectId = projectId;
+    var project = allProjects.find(function(p) { return p.id === projectId; });
+    var widget = document.getElementById('chat-widget');
+    var projectNameLabel = widget.querySelector('.chat-widget__project-name');
+    var messagesContainer = document.getElementById('chat-messages');
+
+    projectNameLabel.textContent = 'Ask about ' + project.title;
+    widget.classList.remove('hidden');
+    
+    // Reset messages
+    messagesContainer.innerHTML = '<div class="chat-message chat-message--bot">' +
+      'Hi! I\'m ready to answer questions about <strong>' + escapeHTML(project.title) + '</strong>. What would you like to know?' +
+      '</div>';
+    
+    document.getElementById('chat-input').focus();
+  }
+
+  function addMessage(text, sender, isTyping) {
+    var messagesContainer = document.getElementById('chat-messages');
+    var div = document.createElement('div');
+    var id = 'msg-' + Date.now();
+    div.id = id;
+    div.className = 'chat-message chat-message--' + sender;
+    if (isTyping) div.classList.add('chat-message--typing');
+    div.innerHTML = text; // We trust our own/AI output or escape it in dev-server
+    messagesContainer.appendChild(div);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    return id;
+  }
+
+  function removeMessage(id) {
+    var msg = document.getElementById(id);
+    if (msg) msg.remove();
+  }
 })();

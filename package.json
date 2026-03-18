@@ -1,0 +1,30 @@
+{
+  "name": "hackathons",
+  "version": "1.0.0",
+  "description": "A static portfolio site displaying my hackathon builds on an interactive timeline. Built with vanilla HTML, CSS, and JavaScript.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --verbose"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AruneemB/hackathons.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AruneemB/hackathons/issues"
+  },
+  "homepage": "https://github.com/AruneemB/hackathons#readme",
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "jest": "^30.3.0",
+    "supertest": "^7.2.2"
+  }
+}

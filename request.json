@@ -1,0 +1,10 @@
+{
+  "question": "What is this project?",
+  "project": {
+    "title": "Test Project",
+    "date": "2026-03-10",
+    "description": "A test project",
+    "techStack": ["Node.js", "Express"],
+    "teamSize": 1
+  }
+}
