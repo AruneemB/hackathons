@@ -333,7 +333,9 @@
     div.id = id;
     div.className = 'chat-message chat-message--' + sender;
     if (isTyping) div.classList.add('chat-message--typing');
-    div.innerHTML = text; // We trust our own/AI output or escape it in dev-server
+    div.innerHTML = sender === 'bot' && typeof marked !== 'undefined'
+      ? marked.parse(text)
+      : text;
     messagesContainer.appendChild(div);
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
     return id;
