@@ -2,9 +2,25 @@
   "meta": {
     "name": "Hackathon Projects",
     "description": "A timeline of hackathon projects",
-    "lastUpdated": "2026-03-05"
+    "lastUpdated": "2026-04-19"
   },
   "projects": [
+    {
+      "id": "lockey",
+      "title": "Lockey",
+      "date": "2026-04-19",
+      "hackathon": "HackKU 2026",
+      "description": "An AI-powered corporate travel concierge designed to streamline the entire travel lifecycle. It features a 2D mascot that guides travelers through planning, policy compliance, live disruptions (crisis management), and multimodal expense reporting.",
+      "techStack": ["Next.js", "TypeScript", "Tailwind CSS", "MongoDB Atlas", "Google Gemini 1.5 Pro", "ElevenLabs TTS", "NextAuth.js", "Google OAuth"],
+      "teamSize": 3,
+      "award": "1st Place in Lockton Track",
+      "links": {
+        "demo": "https://devpost.com/software/lockey-xi15cu",
+        "repo": "https://github.com/AruneemB/hackku"
+      },
+      "thumbnail": "assets/images/lockey-thumbnail.png",
+      "logo": null
+    },
     {
       "id": "knkt",
       "title": "knkt",
