@@ -2,7 +2,7 @@
   "meta": {
     "name": "Hackathon Projects",
     "description": "A timeline of hackathon projects",
-    "lastUpdated": "2026-04-19"
+    "lastUpdated": "2026-04-20"
   },
   "projects": [
     {
@@ -19,7 +19,17 @@
         "repo": "https://github.com/AruneemB/hackku"
       },
       "thumbnail": "assets/images/lockey-thumbnail.png",
-      "logo": null
+      "logo": null,
+      "workflow": [
+        {
+          "title": "System Architecture",
+          "diagram": "flowchart TD\n  User[Traveler] --> Frontend[Next.js Frontend]\n  Frontend --> Auth[NextAuth + Google OAuth]\n  Frontend --> API[API Routes]\n  API --> DB[(MongoDB Atlas)]\n  API --> Gemini[Gemini 1.5 Pro]\n  API --> TTS[ElevenLabs TTS]\n  API --> Monitor[Disruption Monitor]"
+        },
+        {
+          "title": "User Journey",
+          "diagram": "flowchart LR\n  A[Sign In] --> B[Plan Trip]\n  B --> C[Policy Check]\n  C --> D{Compliant?}\n  D -->|Yes| E[Book Trip]\n  D -->|No| F[Suggest Alternative]\n  F --> B\n  E --> G[Expense Report]"
+        }
+      ]
     },
     {
       "id": "knkt",
@@ -35,7 +45,17 @@
         "repo": "https://github.com/AruneemB/raikeshacks"
       },
       "thumbnail": "assets/images/knkt-logo.png",
-      "logo": null
+      "logo": null,
+      "workflow": [
+        {
+          "title": "System Architecture",
+          "diagram": "flowchart TD\n  App[Flutter App] --> BLE[Nearby Connections API]\n  BLE <--> Peers[Nearby Devices]\n  App --> Backend[FastAPI Backend]\n  Backend --> DB[(MongoDB)]\n  Backend --> AI[OpenRouter AI]\n  Backend --> FCM[Firebase Messaging]\n  AI --> Score[Compatibility Score]"
+        },
+        {
+          "title": "Connection Flow",
+          "diagram": "sequenceDiagram\n  participant A as Student A\n  participant BLE as Bluetooth\n  participant API as FastAPI\n  participant B as Student B\n  A->>BLE: Broadcast presence\n  B->>BLE: Broadcast presence\n  BLE->>A: Discover Student B\n  A->>API: Request compatibility score\n  API-->>A: Score and skills profile\n  A->>API: Send connection request\n  API->>B: Push notification\n  B-->>A: Accept connection"
+        }
+      ]
     },
     {
       "id": "sanos",
@@ -50,7 +70,17 @@
         "repo": "https://github.com/mmoiss/tartanhacks"
       },
       "thumbnail": null,
-      "logo": null
+      "logo": null,
+      "workflow": [
+        {
+          "title": "Debug Pipeline",
+          "diagram": "flowchart TD\n  App[Next.js App] --> Mon[Error Monitor]\n  Mon -->|Client crash| Trace[Stack Trace Capture]\n  Mon -->|Build failure| Hook[Vercel Webhook]\n  Trace --> API[FastAPI Backend]\n  Hook --> API\n  API --> DB[(SQLite)]\n  API --> Git[GitHub API]\n  Git --> RCA[AI Root Cause Analysis]\n  RCA --> CR[CodeRabbit Review]\n  CR --> PR[Auto Pull Request]"
+        },
+        {
+          "title": "Fix Loop",
+          "diagram": "sequenceDiagram\n  participant App as Next.js App\n  participant API as FastAPI\n  participant GH as GitHub\n  participant AI as Dedalus AI\n  App->>API: Report crash and trace\n  API->>GH: Fetch recent commits\n  GH-->>API: Commit history\n  API->>AI: Analyze root cause\n  AI-->>API: Causal commit and fix\n  API->>GH: Open PR with fix\n  GH-->>App: PR ready for review"
+        }
+      ]
     },
     {
       "id": "banana-coin",
@@ -66,7 +96,13 @@
         "repo": "https://github.com/micahtid/cornhacks"
       },
       "thumbnail": null,
-      "logo": null
+      "logo": null,
+      "workflow": [
+        {
+          "title": "System Architecture",
+          "diagram": "flowchart TD\n  Client[React Frontend] --> Auth[Firebase Auth]\n  Client --> WS[WebSocket]\n  WS --> API[FastAPI Backend]\n  API --> Redis[(Redis Price State)]\n  API --> Rot[Rot Engine]\n  Rot -->|Price decay event| WS\n  Client --> Bots[AI Trading Bots]\n  Bots --> Strat[Strategy Engine]\n  Strat --> API"
+        }
+      ]
     },
     {
       "id": "rootcode",
@@ -79,7 +115,13 @@
       "award": "1st Place Overall",
       "links": {},
       "thumbnail": "assets/images/rootcode-thumbnail.svg",
-      "logo": null
+      "logo": null,
+      "workflow": [
+        {
+          "title": "ML Pipeline",
+          "diagram": "flowchart LR\n  Raw[3000+ Raw Features] --> Clean[Filter and Clean]\n  Clean --> Scale[StandardScaler and RobustScaler]\n  Scale --> Select[SelectKBest]\n  Select --> PCA[PCA Reduction]\n  PCA --> SVR[SVR]\n  PCA --> Linear[Ridge and Lasso and ElasticNet]\n  PCA --> Tree[RandomForest and GradientBoosting]\n  SVR --> Best[Best Moisture Predictor]\n  Linear --> Best\n  Tree --> Best"
+        }
+      ]
     },
     {
       "id": "beendone",
@@ -94,7 +136,17 @@
         "repo": "https://github.com/micahtid/hackmidwest"
       },
       "thumbnail": "assets/images/beendone-thumbnail.png",
-      "logo": null
-    }    
+      "logo": null,
+      "workflow": [
+        {
+          "title": "System Architecture",
+          "diagram": "flowchart TD\n  Client[React Frontend] --> API[FastAPI Backend]\n  API --> DB[(MongoDB Atlas)]\n  API --> Embed[Sentence Transformers]\n  Embed --> Search[Semantic Vector Search]\n  Search --> Gemini[Google Gemini]\n  Gemini --> Charts[Radar Charts]\n  Gemini --> Map[Geographic Heatmap]\n  Gemini --> PDF[Venture PDF Export]"
+        },
+        {
+          "title": "User Flow",
+          "diagram": "flowchart LR\n  A[Enter Startup Idea] --> B[Semantic Search]\n  B --> C[Competitor Matches]\n  C --> D[AI Analysis]\n  D --> E[Radar Chart]\n  D --> F[Heatmap]\n  D --> G[Pivot Suggestions]\n  E --> H[Export PDF]\n  F --> H\n  G --> H"
+        }
+      ]
+    }
   ]
 }

@@ -840,3 +840,81 @@ h1, h2, h3 {
     border-radius: 0;
   }
 }
+
+/* ==========================================================================
+   11. WORKFLOW PANEL
+   ========================================================================== */
+
+.timeline__link--workflow {
+  background: rgba(99, 102, 241, 0.08);
+  color: #818cf8;
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  cursor: pointer;
+}
+
+.timeline__link--workflow:hover,
+.timeline__link--workflow.is-active {
+  background: rgba(99, 102, 241, 0.18);
+  border-color: rgba(99, 102, 241, 0.5);
+  color: #a5b4fc;
+}
+
+.workflow-panel {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.45s var(--ease-out);
+}
+
+.workflow-panel--open {
+  max-height: 1200px;
+  border-top: 1px solid var(--c-border);
+}
+
+.workflow-panel__tabs {
+  display: flex;
+  gap: 2px;
+  padding: var(--s-md) var(--s-xl) 0;
+}
+
+.workflow-tab {
+  padding: 5px var(--s-md);
+  font-size: var(--f-size-xs);
+  font-weight: 500;
+  color: var(--c-text-faint);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: color var(--duration) var(--ease-out);
+  letter-spacing: 0.02em;
+}
+
+.workflow-tab:hover {
+  color: var(--c-text-muted);
+}
+
+.workflow-tab--active {
+  color: var(--c-text);
+  border-bottom: 2px solid #818cf8;
+}
+
+.workflow-panel__content {
+  padding: var(--s-lg) var(--s-xl);
+  overflow-x: auto;
+}
+
+.workflow-diagram {
+  display: none;
+}
+
+.workflow-diagram--active {
+  display: block;
+}
+
+.workflow-panel .mermaid {
+  display: flex;
+  justify-content: center;
+}
+
+.workflow-panel .mermaid svg {
+  max-width: 100%;
+  height: auto;
+}

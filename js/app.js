@@ -124,11 +124,19 @@
           .join('');
       }
 
-      // Add "Ask" button
+      // Ask button
       linksHTML += '<button class="timeline__link timeline__link--ask" data-id="' + project.id + '">' +
         '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2v10z"/></svg> ' +
         'Ask Question' +
         '</button>';
+
+      // Workflow button — only when the project has diagram data
+      if (project.workflow && project.workflow.length > 0) {
+        linksHTML += '<button class="timeline__link timeline__link--workflow" data-workflow="' + project.id + '">' +
+          '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> ' +
+          'Workflow' +
+          '</button>';
+      }
 
       var awardHTML = '';
       if (project.award) {
@@ -160,6 +168,30 @@
         return '<span class="tag">' + escapeHTML(t) + '</span>';
       }).join('');
 
+      // Build workflow accordion panel
+      var workflowHTML = '';
+      if (project.workflow && project.workflow.length > 0) {
+        var tabsHTML = project.workflow.length > 1
+          ? '<div class="workflow-panel__tabs">' +
+              project.workflow.map(function (d, i) {
+                return '<button class="workflow-tab' + (i === 0 ? ' workflow-tab--active' : '') + '" data-tab="' + i + '">' +
+                  escapeHTML(d.title) + '</button>';
+              }).join('') +
+            '</div>'
+          : '';
+
+        var diagramsHTML = project.workflow.map(function (d, i) {
+          return '<div class="workflow-diagram' + (i === 0 ? ' workflow-diagram--active' : '') + '" data-diagram-index="' + i + '">' +
+            '<pre class="mermaid">' + escapeHTML(d.diagram) + '</pre>' +
+            '</div>';
+        }).join('');
+
+        workflowHTML = '<div class="workflow-panel" id="workflow-' + project.id + '">' +
+          tabsHTML +
+          '<div class="workflow-panel__content">' + diagramsHTML + '</div>' +
+          '</div>';
+      }
+
       article.innerHTML =
         '<div class="timeline__dot" aria-hidden="true"></div>' +
         logoHTML +
@@ -187,6 +219,7 @@
             '</div>' +
             '<div class="timeline__links">' + linksHTML + '</div>' +
           '</div>' +
+          workflowHTML +
         '</div>';
 
       container.appendChild(article);
@@ -249,9 +282,40 @@
   }
 
   document.addEventListener('DOMContentLoaded', function () {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: 'base',
+        themeVariables: {
+          background: '#131313',
+          primaryColor: '#1a1a1a',
+          primaryBorderColor: '#2d2d2d',
+          primaryTextColor: '#d8d4cf',
+          lineColor: '#7a7672',
+          secondaryColor: '#1e1e1e',
+          tertiaryColor: '#131313',
+          edgeLabelBackground: '#1a1a1a',
+          fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif',
+          fontSize: '12px',
+          actorBkg: '#1a1a1a',
+          actorBorder: '#2d2d2d',
+          actorTextColor: '#d8d4cf',
+          actorLineColor: '#7a7672',
+          signalColor: '#7a7672',
+          signalTextColor: '#d8d4cf',
+          labelBoxBkgColor: '#1a1a1a',
+          labelBoxBorderColor: '#2d2d2d',
+          labelTextColor: '#d8d4cf',
+          noteBorderColor: '#2d2d2d',
+          noteBkgColor: '#1e1e1e',
+          noteTextColor: '#d8d4cf'
+        }
+      });
+    }
     loadProjects();
     loadGitHubProfile();
     initChat();
+    initWorkflow();
   });
 
   // --- Chat Logic ---
@@ -283,10 +347,10 @@
 
       addMessage(msg, 'user');
       input.value = '';
-      
+
       // Show typing indicator
       var typingId = addMessage('...', 'bot', true);
-      
+
       try {
         var project = allProjects.find(function(p) { return p.id === currentProjectId; });
         var response = await fetch('/api/ask', {
@@ -317,12 +381,12 @@
 
     projectNameLabel.textContent = 'Ask about ' + project.title;
     widget.classList.remove('hidden');
-    
+
     // Reset messages
     messagesContainer.innerHTML = '<div class="chat-message chat-message--bot">' +
       'Hi! I\'m ready to answer questions about <strong>' + escapeHTML(project.title) + '</strong>. What would you like to know?' +
       '</div>';
-    
+
     document.getElementById('chat-input').focus();
   }
 
@@ -344,5 +408,53 @@
   function removeMessage(id) {
     var msg = document.getElementById(id);
     if (msg) msg.remove();
+  }
+
+  // --- Workflow Logic ---
+
+  function initWorkflow() {
+    var container = document.getElementById('timeline');
+    container.addEventListener('click', function (e) {
+      var workflowBtn = e.target.closest('.timeline__link--workflow');
+      if (workflowBtn) {
+        toggleWorkflow(workflowBtn.getAttribute('data-workflow'), workflowBtn);
+        return;
+      }
+      var tab = e.target.closest('.workflow-tab');
+      if (tab) {
+        var panel = tab.closest('.workflow-panel');
+        selectWorkflowTab(panel, parseInt(tab.getAttribute('data-tab'), 10));
+      }
+    });
+  }
+
+  function toggleWorkflow(projectId, btn) {
+    var panel = document.getElementById('workflow-' + projectId);
+    if (!panel) return;
+    var isOpen = panel.classList.contains('workflow-panel--open');
+    panel.classList.toggle('workflow-panel--open', !isOpen);
+    if (btn) btn.classList.toggle('is-active', !isOpen);
+    if (!isOpen && !panel.dataset.rendered) {
+      panel.dataset.rendered = 'true';
+      renderActiveDiagram(panel);
+    }
+  }
+
+  function selectWorkflowTab(panel, index) {
+    panel.querySelectorAll('.workflow-tab').forEach(function (t, i) {
+      t.classList.toggle('workflow-tab--active', i === index);
+    });
+    panel.querySelectorAll('.workflow-diagram').forEach(function (d, i) {
+      d.classList.toggle('workflow-diagram--active', i === index);
+    });
+    renderActiveDiagram(panel);
+  }
+
+  function renderActiveDiagram(panel) {
+    if (typeof mermaid === 'undefined') return;
+    var el = panel.querySelector('.workflow-diagram--active .mermaid');
+    if (el && !el.dataset.processed) {
+      mermaid.run({ nodes: [el] });
+    }
   }
 })();
