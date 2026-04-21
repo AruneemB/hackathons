@@ -2,8 +2,11 @@
   "name": "hackathons",
   "version": "1.0.0",
   "description": "A static portfolio site displaying my hackathon builds on an interactive timeline. Built with vanilla HTML, CSS, and JavaScript.",
-  "main": "index.js",
+  "engines": {
+    "node": "20.x"
+  },
   "scripts": {
+    "dev": "vercel dev",
     "test": "jest --verbose"
   },
   "repository": {

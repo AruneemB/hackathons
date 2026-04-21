@@ -11,12 +11,12 @@ const port = 3000;
 app.use(cors());
 app.use(express.json());
 
-// Serve static files from the current directory
-app.use(express.static('.'));
+// Serve static files from the public directory
+app.use(express.static('public'));
 
 // Explicitly serve index.html for the root route
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/index.html');
+  res.sendFile(__dirname + '/public/index.html');
 });
 
 // Initialize Google Gemini AI

@@ -19,18 +19,17 @@ A dynamic, interactive portfolio showcasing a timeline of hackathon projects. Th
 ```text
 ├── api/
 │   └── ask.js              # Serverless function for AI Chat (Vercel)
-├── assets/
-│   ├── favicon.svg         # Project icon
-│   └── images/             # Thumbnails and branding
-├── css/
-│   └── style.css           # Modern, responsive UI styles
-├── data/
-│   └── projects.json       # The single source of truth for project data
-├── js/
-│   └── app.js              # Timeline rendering and chat interface logic
+├── public/
+│   ├── assets/             # Project icons and images
+│   ├── css/                # Modern, responsive UI styles
+│   ├── data/               # Project data (projects.json)
+│   ├── js/                 # Timeline and chat logic
+│   └── index.html          # Main entry point (Vercel automatic routing)
+├── .env.example            # Environment variable template
+├── .vercelignore           # Optimized deployment exclusion list
 ├── dev-server.js           # Local development server with AI bridge
-├── index.html              # Main entry point
-└── package.json            # Dependencies for the AI assistant
+├── package.json            # Scripts and dependencies
+└── vercel.json             # Vercel configuration (clean URLs)
 ```
 
 ---
@@ -39,7 +38,8 @@ A dynamic, interactive portfolio showcasing a timeline of hackathon projects. Th
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) (v18+)
+- [Node.js](https://nodejs.org/) (v20+)
+- [Vercel CLI](https://vercel.com/docs/cli) (Recommended for local dev)
 - A Google Gemini API Key (Get one at [Google AI Studio](https://aistudio.google.com/))
 
 ### Local Development
@@ -56,14 +56,22 @@ A dynamic, interactive portfolio showcasing a timeline of hackathon projects. Th
    ```
 
 3. **Configure Environment**:
-   Create a `.env` file in the root directory:
+   Copy `.env.example` to `.env` and add your key:
+   ```bash
+   cp .env.example .env
+   ```
+   Or simply create a `.env` file in the root directory:
    ```env
    GEMINI_API_KEY=your_api_key_here
    ```
 
 4. **Run the Dev Server**:
    ```bash
+   # Recommended (Vercel-like environment)
    npm run dev
+
+   # Alternative (Custom Express server)
+   node dev-server.js
    ```
    *The site will be available at `http://localhost:3000`.*
 

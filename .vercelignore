@@ -1,0 +1,29 @@
+# Build artifacts
+.vercel
+node_modules
+dist
+build
+
+# Development scripts and configs
+dev-server.js
+list-models-fetch.js
+list-models.js
+test-ai.js
+test-env.js
+test-pro.js
+request.json
+__tests__
+
+# Tool-specific metadata
+.history
+.specstory
+.claude
+.vscode
+.cursorindexingignore
+
+# Environment variables
+.env
+.env.*
+
+# Logs
+*.log
