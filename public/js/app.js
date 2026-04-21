@@ -124,6 +124,12 @@
           .join('');
       }
 
+      // Expand Details button
+      linksHTML += '<button class="timeline__link timeline__link--expand" data-id="' + project.id + '">' +
+        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg> ' +
+        'Details' +
+        '</button>';
+
       // Ask button
       linksHTML += '<button class="timeline__link timeline__link--ask" data-id="' + project.id + '">' +
         '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2v10z"/></svg> ' +
@@ -182,7 +188,13 @@
 
         var diagramsHTML = project.workflow.map(function (d, i) {
           return '<div class="workflow-diagram' + (i === 0 ? ' workflow-diagram--active' : '') + '" data-diagram-index="' + i + '">' +
-            '<pre class="mermaid">' + escapeHTML(d.diagram) + '</pre>' +
+            '<div class="mermaid-wrapper">' +
+              '<pre class="mermaid">' + escapeHTML(d.diagram) + '</pre>' +
+              '<div class="workflow-diagram__zoom-hint">' +
+                '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>' +
+                'Click diagram to expand' +
+              '</div>' +
+            '</div>' +
             '</div>';
         }).join('');
 
@@ -316,7 +328,182 @@
     loadGitHubProfile();
     initChat();
     initWorkflow();
+    initModal();
+    initLightbox();
   });
+
+  // --- Modal Logic ---
+
+  function initModal() {
+    var modal = document.getElementById('project-modal');
+    var closeBtn = document.getElementById('modal-close');
+    var overlay = modal.querySelector('.modal__overlay');
+    var container = document.getElementById('timeline');
+    var modalContent = document.getElementById('modal-content');
+
+    container.addEventListener('click', function (e) {
+      var expandBtn = e.target.closest('.timeline__link--expand');
+      if (expandBtn) {
+        openModal(expandBtn.getAttribute('data-id'));
+      }
+    });
+
+    modalContent.addEventListener('click', function (e) {
+      var btn = e.target.closest('.timeline__link--ask');
+      if (btn) {
+        closeModal();
+        openChat(btn.getAttribute('data-id'));
+      }
+    });
+
+    closeBtn.addEventListener('click', closeModal);
+    overlay.addEventListener('click', closeModal);
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+        closeModal();
+      }
+    });
+  }
+
+  function openModal(projectId) {
+    var project = allProjects.find(function (p) { return p.id === projectId; });
+    if (!project) return;
+
+    var modal = document.getElementById('project-modal');
+    var content = document.getElementById('modal-content');
+
+    var dateObj = new Date(project.date + 'T00:00:00');
+    var formattedDate = dateObj.toLocaleDateString('en-US', {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric'
+    });
+
+    var tagsHTML = project.techStack.map(function (t) {
+      return '<span class="tag">' + escapeHTML(t) + '</span>';
+    }).join('');
+
+    var linksHTML = project.links ? Object.entries(project.links).map(function (entry) {
+      var type = entry[0];
+      var url = entry[1];
+      var meta = LINK_TYPES[type] || { label: type, icon: '' };
+      return '<a href="' + escapeAttr(url) + '" class="timeline__link" target="_blank" rel="noopener noreferrer">' +
+        meta.icon + ' ' + escapeHTML(meta.label) +
+        '</a>';
+    }).join('') : '';
+
+    // Add Ask Question button to modal
+    linksHTML += '<button class="timeline__link timeline__link--ask" data-id="' + project.id + '">' +
+      '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2v10z"/></svg> ' +
+      'Ask Question' +
+      '</button>';
+
+    var workflowHTML = '';
+    if (project.workflow && project.workflow.length > 0) {
+      workflowHTML = '<h3 class="modal-project__section-title">Workflow</h3>';
+      workflowHTML += project.workflow.map(function (d) {
+        return '<div class="modal-project__workflow">' +
+          '<div class="modal-project__workflow-title">' + escapeHTML(d.title) + '</div>' +
+          '<div class="mermaid-wrapper">' +
+            '<div class="modal-project__mermaid">' +
+              '<pre class="mermaid">' + escapeHTML(d.diagram) + '</pre>' +
+            '</div>' +
+            '<div class="workflow-diagram__zoom-hint">' +
+              '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>' +
+              'Click diagram to expand' +
+            '</div>' +
+          '</div>' +
+          '</div>';
+      }).join('');
+    }
+
+    content.innerHTML =
+      '<div class="modal-project__header">' +
+        '<div class="modal-project__meta">' +
+          '<span>' + formattedDate + '</span>' +
+          (project.hackathon ? '<span>' + escapeHTML(project.hackathon) + '</span>' : '') +
+          '<span class="timeline__team">' +
+            '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+            '<path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>' +
+            '<circle cx="9" cy="7" r="4"/>' +
+            '<path d="M23 21v-2a4 4 0 00-3-3.87"/>' +
+            '<path d="M16 3.13a4 4 0 010 7.75"/>' +
+            '</svg> ' +
+            'Team of ' + project.teamSize +
+          '</span>' +
+          (project.award ? '<span class="timeline__award">' + escapeHTML(project.award) + '</span>' : '') +
+        '</div>' +
+        '<h2 class="modal-project__title">' + escapeHTML(project.title) + '</h2>' +
+      '</div>' +
+      '<div class="modal-project__desc">' + escapeHTML(project.description) + '</div>' +
+      '<h3 class="modal-project__section-title">Tech Stack</h3>' +
+      '<div class="timeline__tags" style="margin-bottom: 2rem;">' + tagsHTML + '</div>' +
+      workflowHTML +
+      '<div class="modal-project__links">' + linksHTML + '</div>';
+
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+
+    // Render mermaid diagrams
+    if (project.workflow && project.workflow.length > 0 && typeof mermaid !== 'undefined') {
+      setTimeout(function () {
+        mermaid.run({
+          nodes: content.querySelectorAll('.mermaid')
+        });
+      }, 50);
+    }
+  }
+
+  function closeModal() {
+    var modal = document.getElementById('project-modal');
+    modal.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+
+  // --- Lightbox Logic ---
+
+  function initLightbox() {
+    var lightbox = document.getElementById('diagram-lightbox');
+    var closeBtn = document.getElementById('lightbox-close');
+    var overlay = lightbox.querySelector('.modal__overlay');
+
+    document.addEventListener('click', function (e) {
+      var mermaidContainer = e.target.closest('.mermaid');
+      if (mermaidContainer) {
+        openLightbox(mermaidContainer);
+      }
+    });
+
+    closeBtn.addEventListener('click', closeLightbox);
+    overlay.addEventListener('click', closeLightbox);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !lightbox.classList.contains('hidden')) {
+        closeLightbox();
+      }
+    });
+  }
+
+  function openLightbox(container) {
+    var lightbox = document.getElementById('diagram-lightbox');
+    var content = document.getElementById('lightbox-content');
+    var svg = container.querySelector('svg');
+    if (!svg) return;
+
+    content.innerHTML = svg.outerHTML;
+    lightbox.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    var lightbox = document.getElementById('diagram-lightbox');
+    lightbox.classList.add('hidden');
+    // If the project modal is still open, keep the body overflow hidden
+    var modal = document.getElementById('project-modal');
+    if (modal.classList.contains('hidden')) {
+      document.body.style.overflow = '';
+    }
+  }
 
   // --- Chat Logic ---
   var currentProjectId = null;

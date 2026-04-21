@@ -379,11 +379,39 @@ h1, h2, h3 {
    ========================================================================== */
 
 .timeline__card {
+  position: relative;
   background: var(--c-surface);
   border: 1px solid var(--c-border);
   border-radius: var(--card-radius);
   overflow: hidden;
   transition: border-color var(--duration) var(--ease-out);
+}
+
+.timeline__expand-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--c-text-faint);
+  padding: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+  opacity: 0;
+}
+
+.timeline__card:hover .timeline__expand-btn {
+  opacity: 0.7;
+}
+
+.timeline__expand-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--c-text);
+  opacity: 1 !important;
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .timeline__card:hover {
@@ -415,6 +443,30 @@ h1, h2, h3 {
 .timeline__dateline time {
   text-transform: uppercase;
   letter-spacing: 0.06em;
+}
+
+.timeline__title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--s-md);
+}
+
+.timeline__expand-btn {
+  background: none;
+  border: none;
+  color: var(--c-text-faint);
+  padding: 4px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.timeline__expand-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--c-text-muted);
 }
 
 .timeline__title {
@@ -664,6 +716,218 @@ h1, h2, h3 {
   }
 }
 
+/* --- Lightbox --- */
+.lightbox .modal__overlay {
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(15px);
+}
+
+.lightbox__container {
+  max-width: 95vw;
+  max-height: 95vh;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.lightbox__content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+  padding: var(--s-2xl);
+}
+
+.lightbox__content svg {
+  max-width: 100% !important;
+  max-height: 85vh !important;
+  height: auto !important;
+  filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.5));
+}
+
+.mermaid--clickable {
+  cursor: zoom-in;
+  transition: opacity 0.2s ease;
+}
+
+.mermaid--clickable:hover {
+  opacity: 0.8;
+}
+
+.workflow-diagram__zoom-hint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: var(--f-size-xs);
+  color: var(--c-text-faint);
+  margin-top: var(--s-sm);
+  pointer-events: none;
+}
+
+/* --- Project Modal --- */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--s-md);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s var(--ease-out);
+}
+
+.modal:not(.hidden) {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+}
+
+.modal__container {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  max-height: 90vh;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  transform: translateY(20px);
+  transition: transform 0.3s var(--ease-out);
+}
+
+.modal:not(.hidden) .modal__container {
+  transform: translateY(0);
+}
+
+.modal__close {
+  position: absolute;
+  top: var(--s-md);
+  right: var(--s-md);
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--c-text-muted);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: all 0.2s ease;
+}
+
+.modal__close:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--c-text);
+}
+
+.modal__content {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--s-2xl);
+}
+
+.modal-project__header {
+  margin-bottom: var(--s-xl);
+}
+
+.modal-project__title {
+  font-size: var(--f-size-2xl);
+  margin-bottom: var(--s-sm);
+}
+
+.modal-project__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-md);
+  color: var(--c-text-muted);
+  font-size: var(--f-size-sm);
+  margin-bottom: var(--s-lg);
+}
+
+.modal-project__desc {
+  font-size: var(--f-size-lg);
+  line-height: 1.7;
+  color: var(--c-text);
+  margin-bottom: var(--s-2xl);
+}
+
+.modal-project__section-title {
+  font-family: var(--f-family);
+  font-size: var(--f-size-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--c-text-faint);
+  margin-bottom: var(--s-md);
+  border-bottom: 1px solid var(--c-border);
+  padding-bottom: var(--s-xs);
+}
+
+.modal-project__workflow {
+  background: #0a0a0a;
+  border: 1px solid var(--c-border);
+  border-radius: 8px;
+  padding: var(--s-xl);
+  margin-bottom: var(--s-xl);
+  overflow-x: auto;
+}
+
+.modal-project__workflow-title {
+  font-size: var(--f-size-base);
+  font-weight: 500;
+  margin-bottom: var(--s-lg);
+  color: var(--c-text-muted);
+  text-align: center;
+}
+
+.modal-project__mermaid {
+  display: flex;
+  justify-content: center;
+}
+
+.modal-project__mermaid svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.modal-project__links {
+  display: flex;
+  gap: var(--s-md);
+  margin-top: var(--s-xl);
+}
+
+@media (max-width: 600px) {
+  .modal__content {
+    padding: var(--s-lg);
+  }
+  .modal-project__title {
+    font-size: var(--f-size-xl);
+  }
+}
+
 /* --- Chat Widget --- */
 .chat-widget {
   position: fixed;
@@ -829,6 +1093,18 @@ h1, h2, h3 {
 .timeline__link--ask:hover {
   background: rgba(16, 185, 129, 0.2) !important;
   border-color: #10b981 !important;
+}
+
+.timeline__link--expand {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--c-border);
+  cursor: pointer;
+}
+
+.timeline__link--expand:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--c-text-faint);
+  color: var(--c-text);
 }
 
 @media (max-width: 480px) {

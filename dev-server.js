@@ -3,6 +3,8 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
+const path = require('path');
+
 dotenv.config();
 
 const app = express();
@@ -12,11 +14,11 @@ app.use(cors());
 app.use(express.json());
 
 // Serve static files from the public directory
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Explicitly serve index.html for the root route
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/public/index.html');
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // Initialize Google Gemini AI
