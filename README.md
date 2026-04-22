@@ -1,4 +1,4 @@
-# <img src="assets/favicon.svg" width="32" height="32" align="center" /> Aruneem's Hackathon Projects
+# <img src="public/assets/favicon.svg" width="32" height="32" align="center" /> Aruneem's Hackathon Projects
 
 A dynamic, interactive portfolio showcasing a timeline of hackathon projects. This version features an **AI Project Assistant** powered by Google Gemini, allowing visitors to ask questions about each build directly.
 
@@ -6,11 +6,13 @@ A dynamic, interactive portfolio showcasing a timeline of hackathon projects. Th
 
 ## 🚀 Key Features
 
-- **Interactive Timeline**: A responsive, visual journey through past hackathons, from recent wins to early builds.
-- **AI Assistant**: Integration with **Google Gemini (gemini-2.5-flash)** to provide context-aware answers about project details, tech stacks, and team roles.
-- **Live Stats & Skills**: Automated hero section displaying key metrics and a rolling carousel of technologies used across all projects.
-- **Dynamic Data**: All content is driven by a central `projects.json` file, making it easy to maintain and update.
-- **Vercel Ready**: Optimized for deployment on Vercel with serverless function support for the AI chat bridge.
+- **Interactive Timeline**: A responsive, visual journey through past hackathons, sorted by date from most recent to earliest.
+- **Project Detail Modals**: Expandable cards with full project descriptions, tech stacks, team size, awards, and links.
+- **Mermaid Workflow Diagrams**: Each project includes architecture and flow diagrams rendered via Mermaid, with a zoomable lightbox view.
+- **AI Assistant**: Per-project chat powered by **Google Gemini** — ask questions about any build's details, tech choices, or team role.
+- **Live Stats & Skills Carousel**: Auto-computed hero metrics (projects, awards, technologies) and a rolling ticker of every tech used across all projects.
+- **Dynamic Data**: All content is driven by `public/data/projects.json` — add a project there and the timeline, stats, and carousel update automatically.
+- **Vercel Ready**: Optimized for Vercel with a serverless `api/ask.js` function handling the AI chat bridge.
 
 ---
 
@@ -106,10 +108,12 @@ To add a new build, simply update `data/projects.json`. The timeline and stats w
 
 | Project | Hackathon | Award | Stack |
 |---------|-----------|-------|-------|
-| **knkt** | RaikesHacks 2026 | 1st Place | Flutter, FastAPI, MongoDB |
-| **Sanos** | TartanHacks 2026 | — | Next.js, FastAPI, Dedalus SDK |
-| **RootCode** | UNL-Bayer Agtech 2025 | 1st Place | Python, scikit-learn |
-| **BeenDone** | Hack Midwest 2025 | 2nd Place | React, FastAPI, Gemini |
+| **Lockey** | HackKU 2026 | 1st Place in Lockton Track | Next.js, TypeScript, MongoDB Atlas, Gemini |
+| **knkt** | RaikesHacks 2026 | 1st Place in FindU Track | Flutter, FastAPI, MongoDB |
+| **Sanos** | TartanHacks 2026 | — | Next.js, FastAPI, Dedalus Labs SDK |
+| **Banana Coin** | CornHacks 2025 | — | Next.js, FastAPI, Redis |
+| **RootCode** | UNL-Bayer Agtech 2025 | 1st Place Overall | Python, scikit-learn |
+| **BeenDone** | Hack Midwest 2025 | 2nd Place in Best in Show | React, FastAPI, Gemini |
 
 ---
 
