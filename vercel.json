@@ -1,5 +1,9 @@
 {
   "cleanUrls": true,
+  "functions": {
+    "api/ask.js": { "maxDuration": 30 },
+    "api/warmup.js": { "maxDuration": 10 }
+  },
   "rewrites": [
     { "source": "/", "destination": "/public/index.html" },
     { "source": "/(.*)", "destination": "/public/$1" }

@@ -56,6 +56,16 @@ function buildDOM() {
     '<main class="timeline" id="timeline">',
     '  <div class="timeline__line" aria-hidden="true"></div>',
     '</main>',
+    '<div id="project-modal" class="hidden">',
+    '  <div class="modal__overlay"></div>',
+    '  <button id="modal-close"></button>',
+    '  <div id="modal-content"></div>',
+    '</div>',
+    '<div id="diagram-lightbox" class="hidden">',
+    '  <div class="modal__overlay"></div>',
+    '  <button id="lightbox-close"></button>',
+    '  <div id="lightbox-content"></div>',
+    '</div>',
     '<div id="chat-widget" class="chat-widget hidden">',
     '  <div class="chat-widget__title">',
     '    <span class="chat-widget__project-name">Project Chat</span>',
@@ -145,7 +155,7 @@ describe('Chat markdown rendering', function () {
       return Promise.resolve({ ok: true, json: function () { return Promise.resolve({}); } });
     });
 
-    require('../js/app.js');
+    require('../public/js/app.js');
     document.dispatchEvent(new Event('DOMContentLoaded'));
     await flush();
   });

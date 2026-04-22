@@ -24,6 +24,15 @@ app.get('/', (req, res) => {
 // Initialize Google Gemini AI
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 
+app.get('/api/warmup', (req, res) => {
+  try {
+    genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+    res.status(200).json({ ok: true });
+  } catch (_) {
+    res.status(200).json({ ok: false });
+  }
+});
+
 app.post('/api/ask', async (req, res) => {
   const { question, project } = req.body;
 
@@ -63,7 +72,7 @@ app.post('/api/ask', async (req, res) => {
     res.json({ answer: text });
   } catch (error) {
     console.error('AI Error:', error);
-    res.status(500).json({ answer: 'Sorry, I hit a snag while thinking. Is your API key valid?' });
+    res.status(500).json({ answer: 'Sorry, I hit a snag. Please try again in a moment.' });
   }
 });
 

@@ -324,6 +324,7 @@
         }
       });
     }
+    fetch('/api/warmup').catch(function () {});
     loadProjects();
     loadGitHubProfile();
     initChat();
@@ -535,27 +536,37 @@
       addMessage(msg, 'user');
       input.value = '';
 
-      // Show typing indicator
       var typingId = addMessage('...', 'bot', true);
 
-      try {
-        var project = allProjects.find(function(p) { return p.id === currentProjectId; });
-        var response = await fetch('/api/ask', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            question: msg,
-            project: project
-          })
-        });
+      var project = allProjects.find(function(p) { return p.id === currentProjectId; });
+      var payload = JSON.stringify({ question: msg, project: project });
+      var data = null;
+      var fetchFailed = false;
 
-        var data = await response.json();
-        removeMessage(typingId);
-        addMessage(data.answer || 'Sorry, I encountered an error.', 'bot');
-      } catch (err) {
-        removeMessage(typingId);
-        addMessage('Could not connect to the chat server. Make sure dev-server.js is running!', 'bot');
+      for (var attempt = 0; attempt < 2; attempt++) {
+        if (attempt > 0) {
+          await new Promise(function(resolve) { setTimeout(resolve, 1000); });
+        }
+        try {
+          var response = await fetch('/api/ask', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: payload
+          });
+          data = await response.json();
+          fetchFailed = false;
+          break;
+        } catch (err) {
+          fetchFailed = true;
+        }
       }
+
+      removeMessage(typingId);
+      if (fetchFailed) {
+        addMessage('Could not connect to the chat server. Please try again.', 'bot');
+        return;
+      }
+      addMessage(data.answer || 'Sorry, I encountered an error.', 'bot');
     });
   }
 

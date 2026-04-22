@@ -45,6 +45,6 @@ module.exports = async function handler(req, res) {
     res.json({ answer: text });
   } catch (error) {
     console.error('AI Error:', error);
-    res.status(500).json({ answer: 'Sorry, I hit a snag while thinking. Is your API key valid?' });
+    res.status(500).json({ answer: 'Sorry, I hit a snag. Please try again in a moment.' });
   }
 };
